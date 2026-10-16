@@ -22,7 +22,7 @@ export function Logo({
           />
           <path
             d="M7 28 13.5 21.5l4.2 3.4L24 16.5l5 4.6"
-            stroke="#0A1F44"
+            stroke="#f0d78c"
             strokeWidth="1.7"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -30,8 +30,8 @@ export function Logo({
           />
           <defs>
             <linearGradient id={markId} x1="9" y1="10" x2="28" y2="30">
-              <stop stopColor="#0A1F44" />
-              <stop offset="1" stopColor="#1468B8" />
+              <stop stopColor="#f6f1e4" />
+              <stop offset="1" stopColor="#d4af37" />
             </linearGradient>
           </defs>
         </svg>

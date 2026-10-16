@@ -83,7 +83,7 @@ export function Sidebar({
             {admin ? 'Manage catalogue' : 'Continue learning'}
             <span className="rounded-md bg-white/10 px-1.5 py-0.5 text-[10px] tracking-wide text-ink/50">⌘K</span>
           </button>
-          <label className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-white/70 px-3 text-ink/50">
+          <label className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-white/8 px-3 text-ink/50">
             <Search className="h-4 w-4 shrink-0" />
             <input
               value={query}

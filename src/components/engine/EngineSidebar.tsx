@@ -66,7 +66,7 @@ export function EngineSidebar({
             <kbd className="rounded-md bg-white/10 px-1.5 py-0.5 text-[10px] tracking-wide text-ink/45">⌘K</kbd>
           </button>
           <p className="mt-4 px-1 text-[10px] font-bold tracking-[0.18em] text-ink/35 uppercase">Recent</p>
-          <label className="mt-2 flex h-10 items-center gap-2 rounded-xl bg-white/70 px-3 text-ink/40">
+          <label className="mt-2 flex h-10 items-center gap-2 rounded-xl bg-white/8 px-3 text-ink/40">
             <Search className="h-4 w-4 shrink-0" />
             <input
               value={query}

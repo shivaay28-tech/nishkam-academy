@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export function EngineRail() {
   return (
-    <aside className="hidden h-full w-[260px] shrink-0 flex-col overflow-y-auto border-l border-baazex/15 bg-white p-4 lg:flex">
+    <aside className="hidden h-full w-[260px] shrink-0 flex-col overflow-y-auto border-l border-baazex/15 bg-card p-4 lg:flex">
       <p className="text-[10px] font-bold tracking-[0.2em] text-muted uppercase">Academy</p>
       <div className="panel mt-3 rounded-2xl p-4">
         <p className="text-lg font-extrabold text-ink">

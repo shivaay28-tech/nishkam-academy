@@ -40,7 +40,7 @@ export function CourseCard({
                 aria-pressed={selected}
                 aria-label={selected ? `Remove ${course.title} from selection` : `Select ${course.title}`}
                 onClick={onToggle}
-                className={`grid h-7 w-7 place-items-center rounded-lg border ${selected ? 'border-ink bg-white text-ink' : 'border-white/70 bg-white/40 text-transparent'}`}
+                className={`grid h-7 w-7 place-items-center rounded-lg border ${selected ? 'border-baazex bg-baazex text-on-button' : 'border-white/70 bg-black/40 text-transparent'}`}
               >
                 <Check className="h-4 w-4" />
               </button>
@@ -48,7 +48,7 @@ export function CourseCard({
             <DifficultyBadge level={course.difficulty} />
           </div>
           {course.popular ? (
-            <span className="rounded-full bg-white/75 px-2.5 py-1 text-[11px] font-semibold text-accent">Popular</span>
+            <span className="rounded-full bg-baazex px-2.5 py-1 text-[11px] font-semibold text-on-button">Popular</span>
           ) : null}
         </div>
       </div>

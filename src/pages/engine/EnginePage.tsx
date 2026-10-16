@@ -351,8 +351,8 @@ export function EnginePage() {
     doc.title = 'Start analysis'
     doc.body.replaceChildren()
     doc.body.style.margin = '0'
-    doc.body.style.background = '#f7f4ee'
-    doc.body.style.color = '#1c1408'
+    doc.body.style.background = '#070707'
+    doc.body.style.color = '#f6f1e4'
     doc.body.style.fontFamily = 'Inter, system-ui, sans-serif'
     const wrap = doc.createElement('div')
     wrap.style.padding = '12px'
@@ -366,7 +366,7 @@ export function EnginePage() {
     video.style.height = '160px'
     video.style.objectFit = 'contain'
     video.style.borderRadius = '12px'
-    video.style.background = '#1c1408'
+    video.style.background = '#12100c'
     const note = doc.createElement('p')
     note.textContent = 'Switch to the one screen you want, then start the analysis. Only that shared screen is read.'
     note.style.margin = '10px 0'
@@ -382,8 +382,8 @@ export function EnginePage() {
     start.style.height = '40px'
     start.style.border = '0'
     start.style.borderRadius = '12px'
-    start.style.background = '#c4a35a'
-    start.style.color = '#1c1408'
+    start.style.background = '#d4af37'
+    start.style.color = '#0a0a0a'
     start.style.fontWeight = '700'
     start.onclick = () => {
       void startScreenAnalysis()
@@ -394,8 +394,9 @@ export function EnginePage() {
     cancel.style.height = '40px'
     cancel.style.padding = '0 14px'
     cancel.style.borderRadius = '12px'
-    cancel.style.border = '1px solid #e6d7b8'
-    cancel.style.background = '#fff'
+    cancel.style.border = '1px solid #3a3224'
+    cancel.style.background = '#12100c'
+    cancel.style.color = '#f6f1e4'
     cancel.style.fontWeight = '700'
     cancel.onclick = () => stopScreenShare()
     row.append(start, cancel)
@@ -759,7 +760,7 @@ export function EnginePage() {
           </div>
           <video ref={screenCaptureRef} muted playsInline autoPlay className="pointer-events-none fixed h-px w-px opacity-0" />
           {sharingScreen && !analysisPopup ? (
-            <div className="mx-auto mb-3 flex max-w-3xl flex-wrap items-center gap-3 rounded-2xl border border-line bg-white p-3">
+            <div className="mx-auto mb-3 flex max-w-3xl flex-wrap items-center gap-3 rounded-2xl border border-line bg-card p-3">
               <video
                 ref={screenPreviewRef}
                 muted

@@ -20,7 +20,7 @@ export function Header() {
   const { user } = useAuth()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-baazex/15 bg-white/90 shadow-[0_12px_40px_-24px_rgb(var(--glow)_/_0.45)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-baazex/15 bg-card/90 shadow-[0_12px_40px_-24px_rgb(var(--glow)_/_0.45)] backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
         <Link to="/" aria-label={`${APP_NAME} home`}>
           <Logo />
@@ -82,7 +82,7 @@ export function Header() {
         </button>
       </div>
       {open ? (
-        <div className="max-h-[min(80dvh,calc(100dvh-3.5rem))] overflow-y-auto border-t border-line bg-white px-4 py-4 lg:hidden">
+        <div className="max-h-[min(80dvh,calc(100dvh-3.5rem))] overflow-y-auto border-t border-line bg-card px-4 py-4 lg:hidden">
           <div className="flex flex-col gap-1">
             {links.map((link) => (
               <NavLink

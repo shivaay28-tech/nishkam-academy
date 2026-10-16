@@ -96,7 +96,7 @@ export function LessonViewerPage() {
       {mobileCurriculum ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button type="button" className="absolute inset-0 bg-black/55" aria-label="Close lessons" onClick={() => setMobileCurriculum(false)} />
-          <aside className="relative h-full w-[min(100%,20rem)] overflow-y-auto bg-white p-4 shadow-float">
+          <aside className="relative h-full w-[min(100%,20rem)] overflow-y-auto bg-card p-4 shadow-float">
             <Link to={`/courses/${course.slug}`} className="text-xs font-semibold text-accent">
               Back to course
             </Link>

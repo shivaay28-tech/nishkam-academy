@@ -97,7 +97,7 @@ export function HomePage() {
         <div className="grid-fade absolute inset-0" />
         <div className="relative mx-auto grid max-w-7xl min-w-0 items-center gap-10 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-12 lg:py-28">
           <div className="min-w-0">
-            <p className="inline-flex max-w-full items-center rounded-full border border-ink/15 bg-white/60 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-ink uppercase sm:text-xs sm:tracking-[0.18em]">
+            <p className="inline-flex max-w-full items-center rounded-full border border-bright/30 bg-white/8 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-ink uppercase sm:text-xs sm:tracking-[0.18em]">
               {COMPANY_NAME}
             </p>
             <h1 className="display mt-5 text-[1.85rem] leading-[1.12] font-extrabold text-ink sm:text-5xl sm:leading-tight lg:text-[68px] lg:leading-[0.98]">

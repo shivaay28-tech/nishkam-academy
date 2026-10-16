@@ -64,7 +64,7 @@ export function SuperadminPage() {
       <p className="mt-1 text-sm text-muted">One setup is copied to all five academies. Students stay on the free plan until you mark them paid.</p>
       {loading ? <p className="mt-6 text-sm text-muted">Loading…</p> : null}
 
-      <section className="mt-6 space-y-4 rounded-2xl border border-line bg-white p-4">
+      <section className="mt-6 space-y-4 rounded-2xl border border-line bg-card p-4">
         <label className="block text-sm font-semibold text-ink">
           Price (USD)
           <input
@@ -135,7 +135,7 @@ export function SuperadminPage() {
         {requests.length === 0 ? <p className="mt-2 text-sm text-muted">No pending payments.</p> : null}
         <ul className="mt-3 space-y-3">
           {requests.map((item) => (
-            <li key={`${item.academyId}-${item.requestId}`} className="rounded-2xl border border-line bg-white p-4">
+            <li key={`${item.academyId}-${item.requestId}`} className="rounded-2xl border border-line bg-card p-4">
               <p className="font-semibold text-ink">{item.fullName || item.email}</p>
               <p className="text-sm text-muted">{item.academyName} · {item.email}</p>
               <p className="mt-2 text-sm text-ink">{item.method.toUpperCase()} · {item.reference}</p>
