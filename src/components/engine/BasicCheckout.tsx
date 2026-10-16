@@ -4,7 +4,7 @@ import { authService } from '@/services/auth'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const BAAZEX_URL = 'https://www.baazex.com'
+const BAAZEX_URL = 'https://my.baazex.com/register?ref=IBMZ6WT5SO'
 
 export function BasicCheckout() {
   const { user, refresh } = useAuth()

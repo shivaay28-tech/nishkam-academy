@@ -161,7 +161,7 @@ export function EngineSidebar({
         {user && !collapsed ? (
           <div className="mt-2 space-y-2">
             <a
-              href="https://www.baazex.com"
+              href="https://my.baazex.com/register?ref=IBMZ6WT5SO"
               target="_blank"
               rel="noreferrer"
               className="flex h-10 items-center justify-center rounded-xl border border-line text-xs font-semibold text-accent"
