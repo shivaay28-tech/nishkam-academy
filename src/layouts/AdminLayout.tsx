@@ -19,7 +19,10 @@ export function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const [query, setQuery] = useState('')
   const { user } = useAuth()
-  const links = user?.role === 'superadmin' ? [...subnav, { to: '/superadmin', label: 'Payments' }] : subnav
+  const links =
+    user?.role === 'admin' || user?.role === 'superadmin'
+      ? [...subnav, { to: '/superadmin', label: 'Credits' }]
+      : subnav
 
   return (
     <div className="atmosphere flex h-dvh overflow-hidden">

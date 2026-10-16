@@ -322,6 +322,7 @@ const cloudAuth = {
     if (patch.emailPreferences !== undefined) updates.email_preferences = patch.emailPreferences
     if (patch.avatar !== undefined) updates.avatar = patch.avatar
     if (patch.questionsUsed !== undefined) updates.questions_used = patch.questionsUsed
+    if (patch.baazexId !== undefined) updates.baazex_id = patch.baazexId.trim()
     const { data, error } = await sb.from('profiles').update(updates).eq('id', userId).select('*').maybeSingle()
     if (error || !data) return sessionUser?.id === userId ? sessionUser : null
     const mapped = mapProfile(asRow(data) ?? {})

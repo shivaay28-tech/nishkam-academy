@@ -1,6 +1,6 @@
 import { Logo } from '@/components/ui/Logo'
 import { useAuth } from '@/context/AuthContext'
-import type { AiConversation, EnginePlan } from '@/types'
+import type { AiConversation } from '@/types'
 import { cn } from '@/utils/cn'
 import { formatDate } from '@/utils/format'
 import { ChevronLeft, ChevronRight, MoreHorizontal, Plus, Search, Trash2 } from 'lucide-react'
@@ -18,7 +18,6 @@ export function EngineSidebar({
   onDelete,
   remaining,
   limit,
-  plan,
 }: {
   collapsed: boolean
   onToggle: () => void
@@ -31,7 +30,6 @@ export function EngineSidebar({
   onDelete: (id: string) => void
   remaining: number
   limit: number
-  plan: EnginePlan
 }) {
   const { user } = useAuth()
   const visible = conversations.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()))
@@ -114,7 +112,7 @@ export function EngineSidebar({
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold">{user.fullName}</span>
                 <span className="block text-[11px] text-ink/40">
-                  {plan === 'basic' ? `${remaining} of ${limit} on Basic` : `${remaining} of ${limit} free`}
+                  {remaining} of {limit}
                 </span>
               </span>
             )}
@@ -125,11 +123,21 @@ export function EngineSidebar({
             {collapsed ? null : (
               <span>
                 <span className="block text-sm font-semibold">Sign in</span>
-                <span className="block text-[11px] text-ink/40">{remaining} of {limit} free</span>
+                <span className="block text-[11px] text-ink/40">{remaining} of {limit}</span>
               </span>
             )}
           </Link>
         )}
+        {user && !collapsed ? (
+          <a
+            href="https://www.baazex.com"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 flex h-10 items-center justify-center rounded-xl border border-line text-xs font-semibold text-accent"
+          >
+            Open a Baazex account
+          </a>
+        ) : null}
       </div>
     </aside>
   )

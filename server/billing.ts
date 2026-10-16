@@ -93,6 +93,31 @@ export async function requireSuperadmin(request: Request) {
   return data.user
 }
 
+export async function requireStaff(request: Request) {
+  const header = request.headers.get('authorization') ?? ''
+  const token = header.toLowerCase().startsWith('bearer ') ? header.slice(7).trim() : ''
+  if (!token) throw new Error('Sign in again as an admin.')
+  const project = currentProject()
+  const userClient = createClient(project.url, project.anon, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+  const { data, error } = await userClient.auth.getUser(token)
+  if (error || !data.user) throw new Error('Sign in again as an admin.')
+  const admin = createClient(project.url, project.service, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+  const { data: profile, error: profileError } = await admin
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .maybeSingle()
+  if (profileError) throw new Error(profileError.message)
+  if (profile?.role !== 'admin' && profile?.role !== 'superadmin') {
+    throw new Error('Only an admin can record a deposit.')
+  }
+  return admin
+}
+
 export interface PaymentSettingsRow {
   id: number
   price: number

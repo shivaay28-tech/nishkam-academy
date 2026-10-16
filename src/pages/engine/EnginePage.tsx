@@ -49,9 +49,9 @@ export function EnginePage() {
   const [sharingScreen, setSharingScreen] = useState(false)
   const [analysisPopup, setAnalysisPopup] = useState(false)
 
-  const plan = user?.plan === 'basic' ? 'basic' : 'free'
-  const remaining = conversationService.remaining(plan, user?.id)
-  const limit = conversationService.creditLimit(plan)
+  const bonusQuestions = user?.bonusQuestions ?? 0
+  const remaining = conversationService.remaining(bonusQuestions, user?.id)
+  const limit = conversationService.creditLimit(bonusQuestions)
   const active = conversations.find((item) => item.id === activeId)
   const empty = (!active || active.messages.length === 0) && !sending
   const threadCount = (active?.messages.length ?? 0) + (stream ? 1 : 0)
@@ -574,7 +574,6 @@ export function EnginePage() {
           }}
           remaining={remaining}
           limit={limit}
-          plan={plan}
         />
       </div>
 
@@ -605,7 +604,6 @@ export function EnginePage() {
               }}
               remaining={remaining}
               limit={limit}
-              plan={plan}
             />
           </div>
         </div>
@@ -622,7 +620,7 @@ export function EnginePage() {
           </div>
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <span className="rounded-full border border-line px-2 py-1 text-[10px] text-muted sm:px-3 sm:text-[11px]">
-              {plan === 'basic' ? `${remaining}/${limit}` : `${remaining} free`}
+              {remaining}/{limit}
             </span>
             <span className="rounded-full border border-bright/30 bg-bright/10 px-2 py-1 text-[10px] font-semibold text-accent sm:px-3 sm:text-[11px]">
               Live
@@ -850,14 +848,10 @@ export function EnginePage() {
 
       <Modal
         open={creditsOpen}
-        title={plan === 'basic' ? 'Your Basic questions are used up' : 'Basic plan'}
+        title="Engine questions"
         onClose={() => setCreditsOpen(false)}
       >
-        {plan === 'basic' ? (
-          <p className="text-sm text-muted">You have used the 200 questions included with Basic.</p>
-        ) : (
-          <BasicCheckout open={creditsOpen} />
-        )}
+        <BasicCheckout />
       </Modal>
     </div>
   )
