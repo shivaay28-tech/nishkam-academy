@@ -1,9 +1,12 @@
 import { Logo } from '@/components/ui/Logo'
 import { useAuth } from '@/context/AuthContext'
+import { useToast } from '@/context/ToastContext'
+import { authService } from '@/services/auth'
 import type { AiConversation } from '@/types'
 import { cn } from '@/utils/cn'
 import { formatDate } from '@/utils/format'
 import { ChevronLeft, ChevronRight, MoreHorizontal, Plus, Search, Trash2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export function EngineSidebar({
@@ -31,8 +34,35 @@ export function EngineSidebar({
   remaining: number
   limit: number
 }) {
-  const { user } = useAuth()
+  const { user, refresh } = useAuth()
+  const { push } = useToast()
+  const [baazexId, setBaazexId] = useState('')
+  const [savingId, setSavingId] = useState(false)
   const visible = conversations.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()))
+
+  useEffect(() => {
+    setBaazexId(user?.baazexId ?? '')
+  }, [user?.baazexId])
+
+  async function saveBaazexId() {
+    if (!user) return
+    const trimmed = baazexId.trim()
+    if (!trimmed) {
+      push('error', 'Enter your Baazex ID.')
+      return
+    }
+    setSavingId(true)
+    try {
+      const saved = await authService.updateProfile(user.id, { baazexId: trimmed })
+      if (!saved) throw new Error('Could not save the Baazex ID.')
+      await refresh()
+      push('success', 'Baazex ID saved')
+    } catch (error) {
+      push('error', error instanceof Error ? error.message : 'Could not save the Baazex ID.')
+    } finally {
+      setSavingId(false)
+    }
+  }
 
   return (
     <aside
@@ -129,14 +159,38 @@ export function EngineSidebar({
           </Link>
         )}
         {user && !collapsed ? (
-          <a
-            href="https://www.baazex.com"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-2 flex h-10 items-center justify-center rounded-xl border border-line text-xs font-semibold text-accent"
-          >
-            Open a Baazex account
-          </a>
+          <div className="mt-2 space-y-2">
+            <a
+              href="https://www.baazex.com"
+              target="_blank"
+              rel="noreferrer"
+              className="flex h-10 items-center justify-center rounded-xl border border-line text-xs font-semibold text-accent"
+            >
+              Open a Baazex account
+            </a>
+            <form
+              className="space-y-2"
+              onSubmit={(event) => {
+                event.preventDefault()
+                void saveBaazexId()
+              }}
+            >
+              <input
+                aria-label="Baazex ID"
+                className="h-10 w-full rounded-xl border border-line bg-canvas px-3 text-xs"
+                placeholder="Baazex ID"
+                value={baazexId}
+                onChange={(event) => setBaazexId(event.target.value)}
+              />
+              <button
+                type="submit"
+                className="h-10 w-full rounded-xl bg-baazex text-xs font-semibold text-on-button disabled:opacity-60"
+                disabled={savingId}
+              >
+                {savingId ? 'Saving…' : 'Save Baazex ID'}
+              </button>
+            </form>
+          </div>
         ) : null}
       </div>
     </aside>
