@@ -11,7 +11,7 @@ import { categories } from '@/data/categories'
 import { countries } from '@/data/countries'
 import { authService } from '@/services/auth'
 import { catalogService } from '@/services/catalog'
-import { APP_NAME } from '@/utils/constants'
+import { APP_NAME, FREE_QUESTIONS } from '@/utils/constants'
 import { progressService } from '@/services/progress'
 import type { Course, Difficulty, Lesson, Module, SessionUser } from '@/types'
 import { getCourseLessons, getLessonCount, progressPercent } from '@/utils/course'
@@ -294,6 +294,60 @@ export function AdminLessonsPage() {
   )
 }
 
+function questionAllowance(user: SessionUser) {
+  return FREE_QUESTIONS + Math.max(0, user.bonusQuestions ?? 0)
+}
+
+function StudentRow({
+  user,
+  onAdd,
+}: {
+  user: SessionUser
+  onAdd: (user: SessionUser, amount: number) => Promise<void>
+}) {
+  const [amount, setAmount] = useState('10')
+  const [saving, setSaving] = useState(false)
+  const allowance = questionAllowance(user)
+  const remaining = Math.max(0, allowance - (user.questionsUsed ?? 0))
+
+  return (
+    <tr className="border-t border-line">
+      <td className="px-3 py-3 font-semibold text-ink">{user.fullName}</td>
+      <td className="px-3 py-3">{user.email}</td>
+      <td className="px-3 py-3">{user.baazexId || '—'}</td>
+      <td className="px-3 py-3">{remaining} of {allowance}</td>
+      <td className="px-3 py-3">{user.country}</td>
+      <td className="px-3 py-3">{user.role}</td>
+      <td className="px-3 py-3">{formatDate(user.createdAt)}</td>
+      <td className="px-3 py-3">
+        <form
+          className="flex items-center gap-2"
+          onSubmit={(event) => {
+            event.preventDefault()
+            setSaving(true)
+            void onAdd(user, Number(amount)).finally(() => setSaving(false))
+          }}
+        >
+          <input
+            aria-label={`Points for ${user.fullName}`}
+            className="h-9 w-16 rounded-lg border border-line bg-canvas px-2"
+            inputMode="numeric"
+            value={amount}
+            onChange={(event) => setAmount(event.target.value.replace(/[^\d]/g, ''))}
+          />
+          <button
+            type="submit"
+            className="h-9 rounded-lg bg-baazex px-3 text-xs font-semibold text-on-button disabled:opacity-60"
+            disabled={saving}
+          >
+            {saving ? 'Adding…' : 'Add points'}
+          </button>
+        </form>
+      </td>
+    </tr>
+  )
+}
+
 export function AdminStudentsPage() {
   const { push } = useToast()
   const { revision } = useAcademy()
@@ -311,11 +365,29 @@ export function AdminStudentsPage() {
     void authService.refreshUsers().then(setStudents)
   }, [revision])
 
-  const filtered = students.filter(
-    (user) =>
-      user.fullName.toLowerCase().includes(query.toLowerCase()) ||
-      user.email.toLowerCase().includes(query.toLowerCase()),
-  )
+  const filtered = students.filter((user) => {
+    const needle = query.toLowerCase()
+    return (
+      user.fullName.toLowerCase().includes(needle) ||
+      user.email.toLowerCase().includes(needle) ||
+      (user.baazexId ?? '').toLowerCase().includes(needle)
+    )
+  })
+
+  async function addPoints(user: SessionUser, amount: number) {
+    if (!Number.isInteger(amount) || amount < 1) {
+      push('error', 'Enter a whole number of points')
+      return
+    }
+    const bonusQuestions = (user.bonusQuestions ?? 0) + amount
+    const saved = await authService.updateProfile(user.id, { bonusQuestions })
+    if (!saved || saved.id !== user.id) {
+      push('error', 'Could not add points')
+      return
+    }
+    setStudents((current) => current.map((item) => (item.id === user.id ? saved : item)))
+    push('success', 'Points added', `${user.fullName} can use ${amount} more engine questions.`)
+  }
 
   async function createStudent() {
     const country = countries.find((item) => item.code === countryCode)
@@ -350,25 +422,22 @@ export function AdminStudentsPage() {
   return (
     <>
       <AdminTable title="Manage students" query={query} onQuery={setQuery} onCreate={() => setCreating(true)} createLabel="Create student">
-        <table className="w-full min-w-[720px] text-left text-sm">
+        <table className="w-full min-w-[980px] text-left text-sm">
           <thead className="text-xs text-muted uppercase">
             <tr>
               <th className="px-3 py-2">Name</th>
               <th className="px-3 py-2">Email</th>
+              <th className="px-3 py-2">Baazex ID</th>
+              <th className="px-3 py-2">Questions</th>
               <th className="px-3 py-2">Country</th>
               <th className="px-3 py-2">Role</th>
               <th className="px-3 py-2">Joined</th>
+              <th className="px-3 py-2">Add points</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((user) => (
-              <tr key={user.id} className="border-t border-line">
-                <td className="px-3 py-3 font-semibold text-ink">{user.fullName}</td>
-                <td className="px-3 py-3">{user.email}</td>
-                <td className="px-3 py-3">{user.country}</td>
-                <td className="px-3 py-3">{user.role}</td>
-                <td className="px-3 py-3">{formatDate(user.createdAt)}</td>
-              </tr>
+              <StudentRow key={user.id} user={user} onAdd={addPoints} />
             ))}
           </tbody>
         </table>
