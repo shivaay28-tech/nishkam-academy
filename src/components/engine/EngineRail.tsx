@@ -1,4 +1,4 @@
-import { APP_SHORT_NAME, COMPANY_HOST, COMPANY_URL, DISCLAIMER } from '@/utils/constants'
+import { COMPANY_HOST, COMPANY_URL, DISCLAIMER } from '@/utils/constants'
 import { MonitorSmartphone, Shield } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
